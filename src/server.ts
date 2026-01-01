@@ -20,6 +20,7 @@ import {
 import { getConfiguredWebhookHandlers, sendWebhook } from "./event-emitters";
 import { convertImageBuffer } from "./image-tools";
 import getStorageManager from "./remote-storage-manager";
+import v1Routes from "./routes/v1";
 import { NodeProcessError, preprocessNodes } from "./comfy-node-preprocessors";
 import {
   warmupComfyUI,
@@ -138,7 +139,7 @@ server.register(fastifySwaggerUI, {
   },
 });
 
-server.after(() => {
+server.after(async () => {
   const app = server.withTypeProvider<ZodTypeProvider>();
   app.get(
     "/health",
@@ -752,6 +753,11 @@ server.after(() => {
     }
   };
   walk(workflows);
+
+  // Register v1 API routes from separate file
+  await server.register(v1Routes, {
+    getWasEverWarm: () => wasEverWarm,
+  });
 });
 
 let comfyWebsocketClient: WebSocket | null = null;

@@ -1,0 +1,19 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts,json",
+  "ignore": [
+    "node_modules",
+    "dist",
+    ".git"
+  ],
+  "exec": "ts-node",
+  "args": "src/index.ts",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 500,
+  "legacyWatch": false,
+  "verbose": true
+}
