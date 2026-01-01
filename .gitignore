@@ -141,3 +141,5 @@ scratch
 test/output/*.png
 
 cache/
+
+.claude

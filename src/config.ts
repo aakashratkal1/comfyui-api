@@ -644,11 +644,14 @@ for (const modelType of modelSubDirs) {
       .readdirSync(model_path)
       .filter((f) => !(f.startsWith("put_") && f.endsWith("_here")))
       .sort();
-    config.models[modelType] = {
-      dir: model_path,
-      all,
-      enum: z.enum(all as [string, ...string[]]),
-    };
+    // Only add model types that have at least one model file
+    if (all.length > 0) {
+      config.models[modelType] = {
+        dir: model_path,
+        all,
+        enum: z.enum(all as [string, ...string[]]),
+      };
+    }
   }
 }
 

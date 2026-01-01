@@ -99,12 +99,9 @@ const WorkflowResponseSchema = PromptResponseSchema.extend({
   input: z.record(z.any()),
 });
 
-const modelSchema: any = {};
-for (const modelType in config.models) {
-  modelSchema[modelType] = z.string().array();
-}
-
-const ModelResponseSchema = z.object(modelSchema);
+// Use a flexible record schema instead of strict object
+// This allows the response to include only model types with actual models
+const ModelResponseSchema = z.record(z.string().array());
 type ModelResponse = z.infer<typeof ModelResponseSchema>;
 
 let warm = false;
