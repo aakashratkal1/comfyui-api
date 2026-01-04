@@ -426,6 +426,8 @@ export type ComfyHistoryResponse = Record<
         string,
         {
           filename: string;
+          subfolder: string;
+          type: string;
         }[]
       >
     >;
@@ -606,3 +608,25 @@ export type DownloadResponse = z.infer<typeof DownloadResponseSchema>;
 export const DownloadErrorResponseSchema = z.object({
   error: z.string(),
 });
+
+// Request schema for text2img endpoint
+export const Text2ImgRequestSchema = z.object({
+  workflow_name: z
+    .string()
+    .min(1)
+    .describe("Name of the workflow file (without .json extension)"),
+});
+
+// Response schema for text2img endpoint
+export const Text2ImgResponseSchema = z.object({
+  id: z.string().describe("Unique execution ID"),
+  workflow_name: z.string().describe("Name of the workflow that was executed"),
+  images: z.array(z.string()).describe("File paths to generated images"),
+  status: z.literal("ok"),
+  stats: ExecutionStatsSchema.optional().describe(
+    "Execution timing statistics"
+  ),
+});
+
+export type Text2ImgRequest = z.infer<typeof Text2ImgRequestSchema>;
+export type Text2ImgResponse = z.infer<typeof Text2ImgResponseSchema>;

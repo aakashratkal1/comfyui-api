@@ -143,3 +143,4 @@ test/output/*.png
 cache/
 
 .claude
+outputs/*

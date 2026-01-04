@@ -135,7 +135,7 @@ export async function getPromptOutputs(
       const node = outputs[nodeId];
       for (const outputType in node) {
         for (let outputFile of node[outputType]) {
-          const filename = outputFile.filename;
+          const { filename, subfolder } = outputFile;
           if (!filename) {
             /**
              * Some nodes have fields in the outputs that are not actual files.
@@ -145,7 +145,9 @@ export async function getPromptOutputs(
              */
             continue;
           }
-          const filepath = path.join(config.outputDir, filename);
+          const filepath = subfolder
+            ? path.join(config.outputDir, subfolder, filename)
+            : path.join(config.outputDir, filename);
           fileLoadPromises.push(
             fsPromises
               .readFile(filepath)

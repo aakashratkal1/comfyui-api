@@ -1,0 +1,121 @@
+{
+  "23": {
+    "inputs": {
+      "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "24": {
+    "inputs": {
+      "text": "Change stick in monkey hand to paint brush",
+      "clip": [
+        "23",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "25": {
+    "inputs": {
+      "text": "no change to monkey, lowres, bad anatomy, bad hands",
+      "clip": [
+        "23",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "26": {
+    "inputs": {
+      "seed": 1123432621409959,
+      "steps": 15,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "normal",
+      "denoise": 0.87,
+      "model": [
+        "23",
+        0
+      ],
+      "positive": [
+        "24",
+        0
+      ],
+      "negative": [
+        "25",
+        0
+      ],
+      "latent_image": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "27": {
+    "inputs": {
+      "samples": [
+        "26",
+        0
+      ],
+      "vae": [
+        "23",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "28": {
+    "inputs": {
+      "pixels": [
+        "29",
+        0
+      ],
+      "vae": [
+        "23",
+        2
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "29": {
+    "inputs": {
+      "image": "https://mintcdn.com/dripart/OltlUSVBSNcJsDMs/images/tutorial/basic/img2img/input.jpeg?w=840&fit=max&auto=format&n=OltlUSVBSNcJsDMs&q=85&s=96d0a0acd6f76c4b3d547f5911dd2888"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "32": {
+    "inputs": {
+      "filename_prefix": "SD1.5",
+      "images": [
+        "27",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}
